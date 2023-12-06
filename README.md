@@ -1,5 +1,5 @@
 # Webdev-Project
-This is my endassignment for my webdevelopment course using MVC design pattern I am currently working on creating a task manager like Trello.
+This is my endassignment for my webdevelopment course written with PHP and using the MVC design pattern. The website is created around the idea of a taskmanager like Trello.
 
 This repository contains a docker configuration with:
 * NGINX webserver
