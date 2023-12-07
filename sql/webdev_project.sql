@@ -8,7 +8,7 @@ CREATE DATABASE IF NOT EXISTS `webdev_project`;
 -- Switch to the database
 USE `webdev_project`;
 
--- Table structure for table `article`
+-- Table structure for table `users`
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
