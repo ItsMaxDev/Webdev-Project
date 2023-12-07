@@ -1,3 +1,7 @@
+<?php
+  if(!isset($_SESSION)) session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>  
@@ -15,12 +19,21 @@
 
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-          <li class="nav-item me-2">
-            <a class="nav-link" aria-current="page" href="/account/login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/account/signup">Sign Up</a>
-          </li>
+          <?php if (isset($_SESSION['user_id'])) : ?>
+            <li class="nav-item me-2">
+              <a class="nav-link" aria-current="page" href="/account">Account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/account/logout">Logout</a>
+            </li>
+          <?php else : ?>
+            <li class="nav-item me-2">
+              <a class="nav-link" aria-current="page" href="/account/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/account/signup">Sign Up</a>
+            </li>
+          <?php endif; ?>
         </ul>
       </div>
     </div>

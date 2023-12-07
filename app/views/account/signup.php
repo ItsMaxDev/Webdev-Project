@@ -3,6 +3,11 @@ include_once __DIR__ . '/../header.php';
 include_once __DIR__ . '/../../helpers/session_helper.php';
 ?>
 
+<!-- Check if user is already logged in -->
+<?php if (isset($_SESSION['user_id'])) : ?>
+    <?php redirect('/account'); ?>
+<?php endif; ?>
+
 <?php flash('register'); ?>
 
 <h1>Sign Up</h1>

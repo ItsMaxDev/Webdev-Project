@@ -17,6 +17,48 @@ class AccountController
         require __DIR__ . '/../views/account/index.php';
     }
 
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == "GET") {
+            require __DIR__ . '/../views/account/login.php';
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $postData = $this->sanitizeLoginData();
+
+            if (!$this->validateLogin($postData)) {
+                $this->storeFormData($postData, "loginFormData");
+                redirect('/account/login');
+            }
+
+            // Attempt to login user and redirect to account page if successful
+            $user = $this->accountService->login($postData['usernameOrEmail'], $postData['password']);
+            if ($user) {
+                // Clear local storage data
+                echo '<script>localStorage.removeItem("loginFormData");</script>';
+
+                $this->createSession($user);
+
+                redirect('/account');
+            } else {
+                $this->storeFormData($postData, "loginFormData");
+                flash("login", 'Incorrect username/email or password.');
+                redirect('/account/login');
+            }
+        }
+    }
+
+    public function logout()
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_name']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_username']);
+        session_destroy();
+        redirect('/account/login');
+    }
+
     public function signup()
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
@@ -25,16 +67,11 @@ class AccountController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $postData = $this->sanitizePostData();
+            $postData = $this->sanitizeSignupData();
 
             if (!$this->validateRegistration($postData)) {
-                // Store form data in local storage to repopulate form fields
-                echo "<script>";
-                echo "var formData = " . json_encode($postData) . ";";
-                echo "localStorage.setItem('signupFormData', JSON.stringify(formData));";
-                echo "window.location.href = '/account/signup';";
-                echo "</script>";
-                return;
+                $this->storeFormData($postData, "signupFormData");
+                redirect('/account/signup');
             }
 
             // Create user object and populate with sanitized POST data
@@ -44,21 +81,39 @@ class AccountController
             $user->username = $postData['username'];
             $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
+            // Attempt to signup user and redirect to login page if successful
             if ($this->accountService->signup($user)) {
                 // Clear local storage data after successful signup
                 echo '<script>localStorage.removeItem("signupFormData");</script>';
 
-                // Redirect to login page after successful signup and display success message
-                flash("register", 'You are registered and can log in.', 'alert alert-success');
-                echo '<script>window.location.href = "/account/login";</script>';
+                flash("login", 'You are registered and can log in.', 'alert alert-success');
+                redirect('/account/login');
             } else {
+                $this->storeFormData($postData, "signupFormData");
                 flash("register", 'Something went wrong.');
                 redirect('/account/signup');
             }
         }
     }
 
-    private function sanitizePostData()
+    private function storeFormData($postData, $formName)
+    {
+        echo "<script>";
+        echo "var formData = " . json_encode($postData) . ";";
+        echo "localStorage.setItem('$formName', JSON.stringify(formData));";
+        echo "</script>";
+    }
+
+    private function sanitizeLoginData()
+    {
+        // Sanitize POST data to prevent XSS attacks and SQL injections. 
+        return [
+            'usernameOrEmail' => strtolower(trim(htmlspecialchars(filter_input(INPUT_POST, 'username/email')))),
+            'password' => trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW)),
+        ];
+    }
+
+    private function sanitizeSignupData()
     {
         // Sanitize POST data to prevent XSS attacks and SQL injections. 
         return [
@@ -68,6 +123,21 @@ class AccountController
             'password' => trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW)),
             'confirmPassword' => trim(filter_input(INPUT_POST, 'confirmPassword', FILTER_UNSAFE_RAW)),
         ];
+    }
+
+    private function validateLogin($postData)
+    {
+        if (empty($postData['usernameOrEmail']) || empty($postData['password'])) {
+            flash("login", 'Please fill in all fields.');
+            return false;
+        }
+
+        if (!$this->accountService->checkIfEmailOrUsernameExists($postData['usernameOrEmail'], $postData['usernameOrEmail'])) {
+            flash("login", 'Incorrect username/email or password.');
+            return false;
+        }
+
+        return true;
     }
 
     private function validateRegistration($postData)
@@ -136,11 +206,11 @@ class AccountController
         return true;
     }
 
-    public function login()
+    private function createSession($user)
     {
-        if ($_SERVER['REQUEST_METHOD'] == "GET") {
-            require __DIR__ . '/../views/account/login.php';
-            return;
-        }
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_name'] = $user->name;
+        $_SESSION['user_email'] = $user->email;
+        $_SESSION['user_username'] = $user->username;
     }
 }

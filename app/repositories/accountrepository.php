@@ -27,4 +27,15 @@ class AccountRepository extends Repository {
 
         return $results;
     }
+
+    public function getUserByUsernameOrEmail($usernameOrEmail) {
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
+        $stmt->execute([
+            'username' => $usernameOrEmail,
+            'email' => $usernameOrEmail
+        ]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, '\App\Models\User');
+        $user = $stmt->fetch();
+        return $user;
+    }
 }

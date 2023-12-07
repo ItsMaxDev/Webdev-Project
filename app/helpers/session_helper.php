@@ -18,6 +18,6 @@ function flash($name = '', $message = '', $class = 'alert alert-danger') {
 }
 
 function redirect($location) {
-    header('Location: ' . $location);
+    echo '<script>window.location.href = "' . $location . '";</script>';
     exit();
 }
