@@ -25,12 +25,19 @@ class AccountController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            // Sanitize POST data to prevent XSS attacks and SQL injections. 
             $postData = $this->sanitizePostData();
 
-            if (!$this->validateRegistration($postData))
-                redirect('/account/signup');
+            if (!$this->validateRegistration($postData)) {
+                // Store form data in local storage to repopulate form fields
+                echo "<script>";
+                echo "var formData = " . json_encode($postData) . ";";
+                echo "localStorage.setItem('signupFormData', JSON.stringify(formData));";
+                echo "window.location.href = '/account/signup';";
+                echo "</script>";
+                return;
+            }
 
+            // Create user object and populate with sanitized POST data
             $user = new \App\Models\User();
             $user->name = $postData['name'];
             $user->email = $postData['email'];
@@ -38,8 +45,12 @@ class AccountController
             $user->password = password_hash($postData['password'], PASSWORD_DEFAULT);
 
             if ($this->accountService->signup($user)) {
+                // Clear local storage data after successful signup
+                echo '<script>localStorage.removeItem("signupFormData");</script>';
+
+                // Redirect to login page after successful signup and display success message
                 flash("register", 'You are registered and can log in.', 'alert alert-success');
-                redirect('/account/login');
+                echo '<script>window.location.href = "/account/login";</script>';
             } else {
                 flash("register", 'Something went wrong.');
                 redirect('/account/signup');
@@ -49,6 +60,7 @@ class AccountController
 
     private function sanitizePostData()
     {
+        // Sanitize POST data to prevent XSS attacks and SQL injections. 
         return [
             'name' => trim(htmlspecialchars(filter_input(INPUT_POST, 'name'))),
             'email' => trim(strtolower(htmlspecialchars(filter_input(INPUT_POST, 'email')))),
@@ -106,7 +118,7 @@ class AccountController
             return false;
         }
 
-        if (!preg_match("/[!@#$%^&*()_+-=]/", $postData['password'])) {
+        if (!preg_match("/[!@#$%^&*()_+=-]/", $postData['password'])) {
             flash("register", 'Password must contain at least one special character.');
             return false;
         }

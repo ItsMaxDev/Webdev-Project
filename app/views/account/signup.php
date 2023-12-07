@@ -33,3 +33,14 @@ include_once __DIR__ . '/../../helpers/session_helper.php';
 <?php
 include_once __DIR__ . '/../footer.php';
 ?>
+
+<!-- Get form data from local storage and populate form fields -->
+<script>
+    const signupFormData = localStorage.getItem('signupFormData');
+    if (signupFormData) {
+        const data = JSON.parse(signupFormData);
+        document.getElementById('name').value = data.name;
+        document.getElementById('email').value = data.email;
+        document.getElementById('username').value = data.username;
+    }
+</script>
