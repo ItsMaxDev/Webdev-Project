@@ -38,4 +38,13 @@ class AccountRepository extends Repository {
         $user = $stmt->fetch();
         return $user;
     }
+
+    public function changePassword($user, $newPassword) {
+        $stmt = $this->connection->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $results = $stmt->execute([
+            'password' => $newPassword,
+            'id' => $user->id
+        ]);
+        return $results;
+    }
 }
