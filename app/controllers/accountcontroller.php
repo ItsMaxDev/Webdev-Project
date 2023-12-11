@@ -17,6 +17,14 @@ class AccountController
         require __DIR__ . '/../views/account/index.php';
     }
 
+    public function settings() {
+        require __DIR__ . '/../views/account/settings.php';
+    }
+
+    public function security() {
+        require __DIR__ . '/../views/account/security.php';
+    }
+
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
@@ -51,11 +59,14 @@ class AccountController
 
     public function logout()
     {
-        unset($_SESSION['user_id']);
-        unset($_SESSION['user_name']);
-        unset($_SESSION['user_email']);
-        unset($_SESSION['user_username']);
-        session_destroy();
+        if (isset($_SESSION['user_id'])) 
+        {
+            unset($_SESSION['user_id']);
+            unset($_SESSION['user_name']);
+            unset($_SESSION['user_email']);
+            unset($_SESSION['user_username']);
+            session_destroy();
+        }
         redirect('/account/login');
     }
 

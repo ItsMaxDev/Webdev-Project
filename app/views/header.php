@@ -23,9 +23,6 @@
             <li class="nav-item me-2">
               <a class="nav-link" aria-current="page" href="/account">Account</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/account/logout">Logout</a>
-            </li>
           <?php else : ?>
             <li class="nav-item me-2">
               <a class="nav-link" aria-current="page" href="/account/login">Login</a>
