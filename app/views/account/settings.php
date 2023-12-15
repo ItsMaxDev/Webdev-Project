@@ -16,7 +16,7 @@ include_once __DIR__ . '/../header.php';
         </div>
     </div>
 
-    <div class="col-md-9">
+    <div class="col-md-9 mt-3 mt-md-0">
         <h1>Settings</h1>
         <p>Welcome, <?php echo $_SESSION['user_name']; ?></p>
     </div>
