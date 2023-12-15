@@ -7,7 +7,7 @@ class AccountController
 {
     private $accountService;
 
-    function __construct()
+    public function __construct()
     {
         $this->accountService = new \App\Services\AccountService();
     }

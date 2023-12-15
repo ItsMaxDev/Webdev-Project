@@ -2,14 +2,10 @@
 include_once __DIR__ . '/../header.php';
 ?>
 
-<!-- Check if user is logged in -->
-<?php if (!isset($_SESSION['user_id'])): ?>
-    <h1>Account</h1>
-    <p>You are not logged in. Please <a href="/account/login">login</a> or <a href="/account/signup">sign up</a>.</p>
-    <?php
-    include_once __DIR__ . '/../footer.php';
-    return;
-endif; ?>
+<!-- Check if user is not logged in -->
+<?php if (!isset($_SESSION['user_id'])) : ?>
+    <?php redirect('/account/login'); ?>
+<?php endif; ?>
 
 <div class="row">
     <div class="col-md-3">

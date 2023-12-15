@@ -5,7 +5,7 @@ include_once __DIR__ . '/../../helpers/session_helper.php';
 
 <!-- Check if user is not logged in -->
 <?php if (!isset($_SESSION['user_id'])) : ?>
-    <?php redirect('/account'); ?>
+    <?php redirect('/account/login'); ?>
 <?php endif; ?>
 
 <div class="row">

@@ -4,7 +4,7 @@ include_once __DIR__ . '/../header.php';
 
 <!-- Check if user is not logged in -->
 <?php if (!isset($_SESSION['user_id'])) : ?>
-    <?php redirect('/account'); ?>
+    <?php redirect('/account/login'); ?>
 <?php endif; ?>
 
 <div class="row">
