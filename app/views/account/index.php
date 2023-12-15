@@ -7,7 +7,7 @@ include_once __DIR__ . '/../header.php';
     <?php redirect('/account/login'); ?>
 <?php endif; ?>
 
-<div class="row">
+<div class="row mt-5">
     <div class="col-md-3">
         <div class="list-group">
             <a href="/account" class="list-group-item active">Profile</a>
