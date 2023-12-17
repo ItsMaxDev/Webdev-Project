@@ -11,12 +11,15 @@ include_once __DIR__ . '/../../helpers/session_helper.php';
 <?php flash('boards'); ?>
 <h1 class="mt-5"><?php echo $_SESSION['user_username'] . "'s boards"; ?></h1>
 
-<!-- Card for adding a board -->
-<div class="col-lg-3 col-md-6 col-sm-12">
+<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 hover-overlay">
     <a href="#" class="card text-decoration-none">
         <div class="card-body">
             <h5 class="card-title">Add a Board</h5>
         </div>
+        <div
+            class="card mask"
+            style="background-color: rgba(255,255,255, 0.1);"
+        ></div>
     </a>
 </div>
 
