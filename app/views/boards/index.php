@@ -1,26 +1,21 @@
 <?php
 include_once __DIR__ . '/../header.php';
-include_once __DIR__ . '/../../helpers/session_helper.php';
 ?>
 
-<!-- Check if user is not logged in -->
-<?php if (!isset($_SESSION['user_id'])) : ?>
-    <?php redirect('/account/login'); ?>
-<?php endif; ?>
-
-<?php flash('boards'); ?>
 <h1 class="mt-5"><?php echo $_SESSION['user_username'] . "'s boards"; ?></h1>
 
 <div class="row">
-    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 mt-3 mt-sm-0 hover-overlay">
-        <a href="#" class="card text-decoration-none">
-            <div class="card-body">
-                <h5 class="card-title">Board Name</h5>
-                <p class="card-text">Board Description</p>
-            </div>
-            <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
-        </a>
-    </div>
+    <?php foreach ($boards as $board): ?>
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 mt-3 mt-sm-0 hover-overlay">
+            <a href="/boards/board?id=<?= $board->id ?>" class="card text-decoration-none">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $board->name ?></h5>
+                    <p class="card-text"><?= $board->description ?></p>
+                </div>
+                <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
+            </a>
+        </div>
+    <?php endforeach; ?>
     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 mt-3 mt-sm-0 hover-overlay">
         <a href="#" class="card text-decoration-none" data-bs-toggle="modal" data-bs-target="#addBoardModal">
             <div class="card-body">
