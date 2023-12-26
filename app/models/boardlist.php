@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class List {
+class BoardList {
     public $id;
     public $boardId;
     public $name;
