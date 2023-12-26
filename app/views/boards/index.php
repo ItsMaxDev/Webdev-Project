@@ -39,7 +39,7 @@ include_once __DIR__ . '/../header.php';
     </div>
 </div>
 
-<script src="js/addboard.js"></script>
+<script src="/js/addboard.js"></script>
 
 <?php
 include_once __DIR__ . '/../footer.php';
