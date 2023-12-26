@@ -4,6 +4,15 @@ namespace App\Repositories;
 use PDO;
 
 class BoardsRepository extends Repository {
+    public function checkUserBoardAccess($boardId, $userId) {
+        $stmt = $this->connection->prepare("SELECT * FROM boards WHERE id = :boardId AND userId = :userId");
+        $stmt->execute([
+            'boardId' => $boardId,
+            'userId' => $userId
+        ]);
+        $results = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Models\Board');
+        return count($results) > 0;
+    }
 
     public function createBoard($board) {
         $stmt = $this->connection->prepare("INSERT INTO boards (userId, name, description) 

@@ -8,6 +8,10 @@ class BoardsService {
         $this->repository = new \App\Repositories\BoardsRepository();
     }
 
+    public function checkUserBoardAccess($boardId, $userId) {
+        return $this->repository->checkUserBoardAccess($boardId, $userId);
+    }
+
     public function addBoard($board) {
         return $this->repository->createBoard($board);
     }
