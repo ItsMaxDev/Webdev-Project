@@ -14,24 +14,18 @@ class BoardsController
 
     public function index()
     {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['message' => 'Unauthorized']);
+            return;
+        }
+
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            if (!isset($_SESSION['user_id'])) {
-                http_response_code(401);
-                echo json_encode(['message' => 'Unauthorized']);
-                return;
-            }
-    
             $boards = $this->boardsService->getBoards($_SESSION['user_id']);
             echo json_encode($boards);
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!isset($_SESSION['user_id'])) {
-                http_response_code(401);
-                echo json_encode(['message' => 'Unauthorized']);
-                return;
-            }
-            
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {            
             $json = file_get_contents('php://input');
             $boardData = json_decode($json, true);
 
