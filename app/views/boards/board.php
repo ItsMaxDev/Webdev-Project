@@ -115,7 +115,7 @@ include_once __DIR__ . '/../header.php';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveListButton">Save</button>
+                <button type="button" class="btn btn-primary" id="saveListButton" onclick="addList(<?php echo $board->id; ?>)">Save</button>
             </div>
         </div>
     </div>

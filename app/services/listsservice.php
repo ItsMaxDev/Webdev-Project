@@ -11,4 +11,8 @@ class ListsService {
     public function getListsByBoardId($boardId) {
         return $this->repository->getListsByBoardId($boardId);
     }
+
+    public function addList($list) {
+        return $this->repository->createList($list);
+    }
 }
