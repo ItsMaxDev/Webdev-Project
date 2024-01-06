@@ -19,7 +19,7 @@ include_once __DIR__ . '/../header.php';
     </div>
 </div>
 
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemovalModal">Remove</button>
+<button type="button" class="btn btn-danger mt-5" data-bs-toggle="modal" data-bs-target="#confirmRemovalModal">Remove Board</button>
 
 <!-- Add Card Modal -->
 <div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
