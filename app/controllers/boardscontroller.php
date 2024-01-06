@@ -30,8 +30,11 @@ class BoardsController
                 redirect('/account/login');
             }
 
-            $board = $this->boardsService->getBoard($_GET['id']);
+            if (!isset($_GET['id'])) {
+                redirect('/boards');
+            }
 
+            $board = $this->boardsService->getBoard($_GET['id']);
             if (!$board || $board->userId != $_SESSION['user_id']) {
                 redirect('/boards');
             }
@@ -40,7 +43,9 @@ class BoardsController
         }
 
         // Check if removeboard POST request has been sent and call removeBoard method
-        if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['removeboard'])) $this->removeBoard();
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['removeboard'])) {
+            $this->removeBoard();
+        }
     }
 
     private function removeBoard()
