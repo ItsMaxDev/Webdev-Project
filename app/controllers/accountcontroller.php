@@ -63,7 +63,7 @@ class AccountController
             unset($_SESSION['user_username']);
             session_destroy();
         }
-        redirect('/account/login');
+        header('Location: /account/login');
     }
 
     public function signup()
@@ -170,56 +170,29 @@ class AccountController
 
     private function validateChangePassword($postData)
     {
-        if (
-            empty($postData['current_password']) ||
-            empty($postData['new_password']) ||
-            empty($postData['confirm_password'])
-        ) {
-            flash("security", 'Please fill in all fields.');
-            return false;
-        }
+        if ($postData['new_password'] !== $postData['confirm_password'])
+            throw new \App\Exceptions\ChangePasswordException('Passwords do not match.');
 
-        if ($postData['new_password'] !== $postData['confirm_password']) {
-            flash("security", 'Passwords do not match.');
-            return false;
-        }
+        if ($postData['new_password'] === $postData['current_password'])
+            throw new \App\Exceptions\ChangePasswordException('New password cannot be the same as current password.');
 
-        if ($postData['new_password'] === $postData['current_password']) {
-            flash("security", 'New password cannot be the same as current password.');
-            return false;
-        }
+        if (strlen($postData['new_password']) < 8 || strlen($postData['new_password']) > 32)
+            throw new \App\Exceptions\ChangePasswordException('New password must be between 8 and 32 characters.');
 
-        if (strlen($postData['new_password']) < 8 || strlen($postData['new_password']) > 32) {
-            flash("security", 'New password must be between 8 and 32 characters.');
-            return false;
-        }
+        if (!preg_match("/[a-zA-Z0-9!@#$%^&*()_+-=]/", $postData['new_password']))
+            throw new \App\Exceptions\ChangePasswordException('New password can only contain letters, numbers, and special characters.');
 
-        if (!preg_match("/[a-zA-Z0-9!@#$%^&*()_+-=]/", $postData['new_password'])) {
-            flash("security", 'New password can only contain letters, numbers, and special characters.');
-            return false;
-        }
+        if (!preg_match("/[a-z]/", $postData['new_password']))
+            throw new \App\Exceptions\ChangePasswordException('New password must contain at least one lowercase letter.');
 
-        if (!preg_match("/[a-z]/", $postData['new_password'])) {
-            flash("security", 'New password must contain at least one lowercase letter.');
-            return false;
-        }
+        if (!preg_match("/[A-Z]/", $postData['new_password']))
+            throw new \App\Exceptions\ChangePasswordException('New password must contain at least one uppercase letter.');
 
-        if (!preg_match("/[A-Z]/", $postData['new_password'])) {
-            flash("security", 'New password must contain at least one uppercase letter.');
-            return false;
-        }
+        if (!preg_match("/[0-9]/", $postData['new_password']))
+            throw new \App\Exceptions\ChangePasswordException('New password must contain at least one number.');
 
-        if (!preg_match("/[0-9]/", $postData['new_password'])) {
-            flash("security", 'New password must contain at least one number.');
-            return false;
-        }
-
-        if (!preg_match("/[!@#$%^&*()_+=-]/", $postData['new_password'])) {
-            flash("security", 'New password must contain at least one special character.');
-            return false;
-        }
-
-        return true;
+        if (!preg_match("/[!@#$%^&*()_+=-]/", $postData['new_password']))
+            throw new \App\Exceptions\ChangePasswordException('New password must contain at least one special character.');
     }
 
     private function createSession($user)
@@ -234,22 +207,26 @@ class AccountController
     {
         $postData = $this->sanitizeChangePasswordData();
 
-        if (!$this->validateChangePassword($postData)) {
-            redirect('/account/security');
+        try {
+            $this->validateChangePassword($postData);
+        } catch (\App\Exceptions\ChangePasswordException $e) {
+            $error = $e->getMessage();
+            require __DIR__ . '/../views/account/security.php';
+            return;
         }
 
         $user = $this->accountService->login($_SESSION['user_username'], $postData['current_password']);
         if (!$user) {
-            flash("security", 'Incorrect password.');
-            redirect('/account/security');
+            $error = 'Incorrect password.';
+            require __DIR__ . '/../views/account/security.php';
+            return;
         }
 
         if ($this->accountService->changePassword($user, $postData['new_password'])) {
-            flash("security", 'Password changed successfully.', 'alert alert-success');
-            redirect('/account/security');
+            $success = 'Password changed successfully.';
         } else {
-            flash("security", 'Something went wrong.');
-            redirect('/account/security');
+            $error = 'Something went wrong.';
         }
+        require __DIR__ . '/../views/account/security.php';
     }
 }
