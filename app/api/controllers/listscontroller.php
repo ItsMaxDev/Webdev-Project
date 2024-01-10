@@ -1,8 +1,6 @@
 <?php
 namespace App\Api\Controllers;
 
-require_once __DIR__ . '/../../helpers/session_helper.php';
-
 class ListsController
 {
     private $listsService;

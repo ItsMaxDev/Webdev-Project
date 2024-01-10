@@ -16,7 +16,6 @@
             "App\\Services\\": "./services",
             "App\\Repositories\\": "./repositories",
             "App\\Views\\": "./views",
-            "App\\Helpers\\": "./helpers",
             "App\\Api\\": "./api",
             "App\\Api\\Controllers\\": "./api/controllers",
             "App\\Exceptions\\": "./exceptions"

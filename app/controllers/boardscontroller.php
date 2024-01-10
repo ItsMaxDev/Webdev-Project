@@ -1,8 +1,6 @@
 <?php
 namespace App\Controllers;
 
-require_once __DIR__ . '/../helpers/session_helper.php';
-
 class BoardsController
 {
     private $boardsService;
@@ -16,7 +14,8 @@ class BoardsController
     {
         if($_SERVER['REQUEST_METHOD'] == "GET") {
             if (!isset($_SESSION['user_id'])) {
-                redirect('/account/login');
+                header('Location: /account/login');
+                return;
             }
 
             require __DIR__ . '/../views/boards/index.php';
@@ -27,16 +26,19 @@ class BoardsController
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
             if (!isset($_SESSION['user_id'])) {
-                redirect('/account/login');
+                header('Location: /account/login');
+                return;
             }
 
             if (!isset($_GET['id'])) {
-                redirect('/boards');
+                header('Location: /boards');
+                return;
             }
 
             $board = $this->boardsService->getBoard($_GET['id']);
             if (!$board || $board->userId != $_SESSION['user_id']) {
-                redirect('/boards');
+                header('Location: /boards');
+                return;
             }
 
             require __DIR__ . '/../views/boards/board.php';
@@ -52,18 +54,20 @@ class BoardsController
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (!isset($_SESSION['user_id'])) {
-                redirect('/account/login');
+                header('Location: /account/login');
+                return;
             }
 
             $boardData = json_decode($_POST['board'], true);
 
             // Check if board exists and if the user is the owner of the board
             if (!$boardData || $boardData['userId'] != $_SESSION['user_id']) {
-                redirect('/boards');
+                header('Location: /boards');
+                return;
             }
 
             if ($this->boardsService->removeBoard($boardData['id'])) {
-                redirect('/boards');
+                header('Location: /boards');
             } else {
                 echo '<script>alert("Failed to remove board");</script>';
             }
