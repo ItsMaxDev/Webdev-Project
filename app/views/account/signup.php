@@ -1,6 +1,5 @@
 <?php
 include_once __DIR__ . '/../header.php';
-include_once __DIR__ . '/../../helpers/session_helper.php';
 ?>
 
 <!-- Check if user is already logged in -->
@@ -13,29 +12,31 @@ include_once __DIR__ . '/../../helpers/session_helper.php';
         <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
             <div class="card">
                 <div class="card-body">
-                    <?php flash('register'); ?>
+                    <?php if (isset($error)) : ?>
+                        <div class="alert alert-danger"><?php echo $error;?></div>
+                    <?php endif; ?>
                     <h1 class="text-center">Sign Up</h1>
                     <p class="text-center">Already have an account? <a href="/account/login">Login</a></p>
                     <form method="post">
                         <div class="form-group mt-4 mb-3">
                             <label for="name">Name</label>
-                            <input name="name" id="name" class="form-control" />
+                            <input name="name" id="name" class="form-control" value="<?= $savedNameInput ?? '' ?>" required />
                         </div>
                         <div class="form-group mb-3">
                             <label for="email">Email</label>
-                            <input name="email" id="email" class="form-control" />
+                            <input name="email" id="email" class="form-control" value="<?= $savedEmailInput ?? '' ?>" required />
                         </div>
                         <div class="form-group mb-3">
                             <label for="username">Username</label>
-                            <input name="username" id="username" class="form-control" />
+                            <input name="username" id="username" class="form-control" value="<?= $savedUsernameInput ?? '' ?>" required />
                         </div>
                         <div class="form-group mb-3">
                             <label for="password">Password</label>
-                            <input name="password" id="password" class="form-control" type="password" />
+                            <input name="password" id="password" class="form-control" type="password" required />
                         </div>
                         <div class="form-group mb-4">
                             <label for="confirmPassword">Confirm Password</label>
-                            <input name="confirmPassword" id="confirmPassword" class="form-control" type="password" />
+                            <input name="confirmPassword" id="confirmPassword" class="form-control" type="password" required />
                         </div>
                         <button type="submit" class="btn btn-primary rounded-pill col-12" value="signup">Sign Up</button>
                     </form>
@@ -48,14 +49,3 @@ include_once __DIR__ . '/../../helpers/session_helper.php';
 <?php
 include_once __DIR__ . '/../footer.php';
 ?>
-
-<!-- Get form data from local storage and populate form fields -->
-<script>
-    const signupFormData = localStorage.getItem('signupFormData');
-    if (signupFormData) {
-        const data = JSON.parse(signupFormData);
-        document.getElementById('name').value = data.name;
-        document.getElementById('email').value = data.email;
-        document.getElementById('username').value = data.username;
-    }
-</script>
