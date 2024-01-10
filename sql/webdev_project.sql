@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `boards` (
   `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
   `description` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -42,7 +42,7 @@ CREATE TABLE `boards` (
 
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL,
-  `list` int(11) NOT NULL,
+  `listId` int(11) NOT NULL,
   `title` varchar(128) NOT NULL,
   `description` varchar(9999) NOT NULL,
   `deadline` datetime DEFAULT NULL
@@ -56,7 +56,7 @@ CREATE TABLE `cards` (
 
 CREATE TABLE `lists` (
   `id` int(11) NOT NULL,
-  `board` int(11) NOT NULL,
+  `boardId` int(11) NOT NULL,
   `name` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -83,21 +83,21 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `boards`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `User Reference` (`user`);
+  ADD KEY `User Reference` (`userId`);
 
 --
 -- Indexes for table `cards`
 --
 ALTER TABLE `cards`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `List Reference` (`list`);
+  ADD KEY `List Reference` (`listId`);
 
 --
 -- Indexes for table `lists`
 --
 ALTER TABLE `lists`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `Board Reference` (`board`);
+  ADD KEY `Board Reference` (`boardId`);
 
 --
 -- Indexes for table `users`
@@ -141,19 +141,19 @@ ALTER TABLE `users`
 -- Constraints for table `boards`
 --
 ALTER TABLE `boards`
-  ADD CONSTRAINT `User Reference` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `User Reference` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `cards`
 --
 ALTER TABLE `cards`
-  ADD CONSTRAINT `List Reference` FOREIGN KEY (`list`) REFERENCES `lists` (`id`);
+  ADD CONSTRAINT `List Reference` FOREIGN KEY (`listId`) REFERENCES `lists` (`id`);
 
 --
 -- Constraints for table `lists`
 --
 ALTER TABLE `lists`
-  ADD CONSTRAINT `Board Reference` FOREIGN KEY (`board`) REFERENCES `boards` (`id`);
+  ADD CONSTRAINT `Board Reference` FOREIGN KEY (`boardId`) REFERENCES `boards` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
