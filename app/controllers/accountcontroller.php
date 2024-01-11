@@ -12,15 +12,30 @@ class AccountController
 
     public function index()
     {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /account/login');
+            return;
+        }
+
         require __DIR__ . '/../views/account/index.php';
     }
 
     public function settings() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /account/login');
+            return;
+        }
+
         require __DIR__ . '/../views/account/settings.php';
     }
 
     public function security() {
         if($_SERVER['REQUEST_METHOD'] == "GET") {
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: /account/login');
+                return;
+            }
+
             require __DIR__ . '/../views/account/security.php';
             return;
         }
@@ -33,6 +48,11 @@ class AccountController
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
+            if (isset($_SESSION['user_id'])) {
+                header('Location: /account');
+                return;
+            }
+
             require __DIR__ . '/../views/account/login.php';
             return;
         }
@@ -69,6 +89,11 @@ class AccountController
     public function signup()
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
+            if (isset($_SESSION['user_id'])) {
+                header('Location: /account');
+                return;
+            }
+            
             require __DIR__ . '/../views/account/signup.php';
             return;
         }

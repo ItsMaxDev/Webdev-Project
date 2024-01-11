@@ -2,11 +2,6 @@
 include_once __DIR__ . '/../header.php';
 ?>
 
-<!-- Check if user is already logged in -->
-<?php if (isset($_SESSION['user_id'])) : ?>
-    <?php redirect('/account'); ?>
-<?php endif; ?>
-
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
