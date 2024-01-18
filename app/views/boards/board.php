@@ -124,6 +124,7 @@ include_once __DIR__ . '/../header.php';
 <script src="/js/lists.js"></script>
 <script src="/js/cards.js"></script>
 <script>fetchLists(<?php echo $board->id; ?>);</script>
+<script>fetchCards(<?php echo $board->id; ?>);</script>
 
 <?php
 include_once __DIR__ . '/../footer.php';

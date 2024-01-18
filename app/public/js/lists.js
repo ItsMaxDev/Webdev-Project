@@ -19,7 +19,7 @@ function fetchLists(boardId) {
                     <div class="card-body" id="list-${list.id}">
                     </div>
                     <div class="card-footer">
-                        <button type="button" class="btn btn-primary" id="addCardButton" data-bs-toggle="modal" data-bs-target="#addCardModal">Add a card</button>
+                        <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${list.id})">Add a card</button>
                     </div>
                 </div>
             `;
@@ -28,6 +28,18 @@ function fetchLists(boardId) {
         });
     })
     .catch(error => console.error('Error fetching lists:', error));
+}
+
+function addCardModal(boardid, listId) {
+    // Open the add card modal
+    const addCardModal = new bootstrap.Modal(document.getElementById('addCardModal'));
+    addCardModal.show();
+
+    // Update the saveCardButton to pass along the correct listId
+    const saveCardButton = document.getElementById('saveCardButton');
+    saveCardButton.onclick = function() {
+        addCard(boardid, listId);
+    };
 }
 
 function addList(boardId) {

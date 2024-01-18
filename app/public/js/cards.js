@@ -1,5 +1,5 @@
-function fetchCards(listIds) {
-    fetch(`/api/cards?listIds=${listIds.join(',')}`, {
+function fetchCards(boardId) {
+    fetch(`/api/cards?boardId=${boardId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ function fetchCards(listIds) {
             cardElement.href = "#";
             cardElement.setAttribute("data-bs-toggle", "modal");
             cardElement.setAttribute("data-bs-target", "#editCardModal");
-            cardElement.setAttribute("onclick", `updateEditCardModal('${card.id}')`);
+            cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${card.id}')`);
             cardElement.innerHTML = `
                 <div class="card bg-light-subtle hover-overlay">
                     <div class="card-body">
@@ -32,21 +32,86 @@ function fetchCards(listIds) {
     .catch(error => console.error('Error fetching cards:', error));
 }
 
-function updateEditCardModal(cardId) {
-    // Create an example card object
-    var card = {
-        id: cardId, // Pass the card ID
-        listId: 1,
-        name: 'Card Name',
-        description: 'Card Description',
-        dueDate: '2021-10-01T12:00'
-    };
+function addCard(boardId, listId) {
+    
+    const cardName = document.getElementById('cardName').value;
+    const cardDescription = document.getElementById('cardDescription').value;
+    const cardDueDate = document.getElementById('dueDate').value;
+    
+    if (cardName.trim() === '' || cardDescription.trim() === '' || cardDueDate.trim() === '') {
+        alert('Please fill in all fields');
+        return;
+    }    
 
-    // Update card modal fields
-    document.getElementById('editCardModalLabel').innerText = card.name;
-    document.getElementById('editCardDescription').value = card.description;
-    document.getElementById('editDueDate').value = card.dueDate;
-    document.getElementById('editCardId').value = card.id; // Set the card ID in the hidden input field
+    if (cardName.length > 32) {
+        alert('Card name cannot exceed 32 characters.');
+        return;
+    }
+    
+    fetch('/api/cards/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            boardId: boardId,
+            listId: listId,
+            cardName: cardName,
+            cardDescription: cardDescription,
+            cardDueDate: cardDueDate
+        }),
+    })
+    .then(response => response.json())
+    .then(result => {
+        const listContainer = document.getElementById(`list-${listId}`);
+        const cardElement = document.createElement('a');
+        cardElement.href = "#";
+        cardElement.setAttribute("data-bs-toggle", "modal");
+        cardElement.setAttribute("data-bs-target", "#editCardModal");
+        cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${result.cardId}')`);
+        cardElement.innerHTML = `
+            <div class="card bg-light-subtle hover-overlay">
+                <div class="card-body">
+                    <h5 class="card-title">${cardName}</h5>
+                    <p class="card-text">${cardDescription}</p>
+                </div>
+                <div class="card-footer">
+                    ${dueDate}
+                </div>
+                <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
+            </div>
+        `;
+        listContainer.appendChild(cardElement);
+
+        // Clear the modal fields
+        document.getElementById('cardName').value = '';
+        document.getElementById('cardDescription').value = '';
+        document.getElementById('dueDate').value = '';
+
+        // Close the modal
+        const addCardModal = document.getElementById('addCardModal');
+        const modal = bootstrap.Modal.getInstance(addCardModal);
+        modal.hide();
+    })
+    .catch(error => console.error('Error adding card:', error));
+}
+
+function updateEditCardModal(boardId, cardId) {
+    fetch(`/api/cards/card?boardId=${boardId}&cardId=${cardId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(card => {
+        // Update card modal fields
+        document.getElementById('editCardModalLabel').innerText = card.name;
+        document.getElementById('editCardDescription').value = card.description;
+        document.getElementById('editDueDate').value = card.dueDate;
+        document.getElementById('editCardId').value = card.id; // Set the card ID in the hidden input field
+    })
+    .catch(error => console.error('Error fetching card:', error));
 }
 
 function updateCardName() {
