@@ -38,14 +38,26 @@ function addCard(boardId, listId) {
     const cardDescription = document.getElementById('cardDescription').value;
     const cardDueDate = document.getElementById('dueDate').value;
     
-    if (cardName.trim() === '' || cardDescription.trim() === '' || cardDueDate.trim() === '') {
+    if (cardName.trim() === '' || cardDescription.trim() === '') {
         alert('Please fill in all fields');
         return;
-    }    
+    }
 
     if (cardName.length > 32) {
         alert('Card name cannot exceed 32 characters.');
         return;
+    }
+    
+    const requestBody = {
+        boardId: boardId,
+        listId: listId,
+        cardName: cardName,
+        cardDescription: cardDescription
+    };
+
+    // Add due date to request body if it is not empty
+    if (cardDueDate.trim() !== '') {
+        requestBody.cardDueDate = cardDueDate;
     }
     
     fetch('/api/cards/create', {
@@ -53,13 +65,7 @@ function addCard(boardId, listId) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            boardId: boardId,
-            listId: listId,
-            cardName: cardName,
-            cardDescription: cardDescription,
-            cardDueDate: cardDueDate
-        }),
+        body: JSON.stringify(requestBody),
     })
     .then(response => response.json())
     .then(result => {

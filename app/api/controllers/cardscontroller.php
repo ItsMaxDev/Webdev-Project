@@ -89,12 +89,12 @@ class CardsController
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
 
-            if ($data && isset($data['boardId'], $data['listId'], $data['cardName'], $data['cardDescription'], $data['cardDueDate'])) {
+            if ($data && isset($data['boardId'], $data['listId'], $data['cardName'], $data['cardDescription'])) {
                 $boardId = filter_var($data['boardId'], FILTER_SANITIZE_NUMBER_INT);
                 $listId = filter_var($data['listId'], FILTER_SANITIZE_NUMBER_INT);
                 $cardName = trim(htmlspecialchars($data['cardName']));
                 $cardDescription = trim(htmlspecialchars($data['cardDescription']));
-                $cardDueDate = filter_var($data['cardDueDate'], FILTER_SANITIZE_STRING);
+                $cardDueDate = isset($data['cardDueDate']) ? filter_var($data['cardDueDate'], FILTER_SANITIZE_STRING) : null;
 
                 // Check if the board belongs to the user
                 if (!$this->boardsService->checkUserBoardAccess($boardId, $userId)) {
