@@ -20,7 +20,7 @@ function fetchCards(boardId) {
                         <p class="card-text">${card.description}</p>
                     </div>
                     <div class="card-footer">
-                        ${card.dueDate ? card.dueDate : ''}
+                        ${card.dueDate ? new Date(card.dueDate).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : ''}
                     </div>
                     <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
                 </div>
@@ -82,7 +82,7 @@ function addCard(boardId, listId) {
                     <p class="card-text">${cardDescription}</p>
                 </div>
                 <div class="card-footer">
-                    ${cardDueDate ? cardDueDate : ''}
+                    ${cardDueDate ? new Date(cardDueDate).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : ''}
                 </div>
                 <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
             </div>
