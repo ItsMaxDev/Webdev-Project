@@ -14,7 +14,7 @@ function fetchCards(boardId) {
             cardElement.setAttribute("data-bs-target", "#editCardModal");
             cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${card.id}')`);
             cardElement.innerHTML = `
-                <div class="card bg-light-subtle hover-overlay">
+                <div class="card bg-light-subtle hover-overlay mt-3">
                     <div class="card-body">
                         <h5 class="card-title">${card.name}</h5>
                         <p class="card-text">${card.description}</p>
@@ -70,7 +70,7 @@ function addCard(boardId, listId) {
         cardElement.setAttribute("data-bs-target", "#editCardModal");
         cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${result.cardId}')`);
         cardElement.innerHTML = `
-            <div class="card bg-light-subtle hover-overlay">
+            <div class="card bg-light-subtle hover-overlay mt-3">
                 <div class="card-body">
                     <h5 class="card-title">${cardName}</h5>
                     <p class="card-text">${cardDescription}</p>
