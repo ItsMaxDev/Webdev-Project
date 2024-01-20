@@ -56,17 +56,17 @@ include_once __DIR__ . '/../header.php';
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editCardModalLabel" contenteditable="true" onblur="updateCardName()"></h1>
+                <h1 class="modal-title fs-5" id="editCardModalLabel" contenteditable="true" onblur="updateCard(<?php echo $board->id; ?>)"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="editCardDescription" class="form-label">Card Description</label>
-                    <textarea class="form-control" id="editCardDescription" rows="3" onblur="updateCardDescription()"></textarea>
+                    <textarea class="form-control" id="editCardDescription" rows="3" onblur="updateCard(<?php echo $board->id; ?>)"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="editDueDate" class="form-label">Due Date</label>
-                    <input type="datetime-local" class="form-control" id="editDueDate" onblur="updateDueDate()">
+                    <input type="datetime-local" class="form-control" id="editDueDate" onblur="updateCard(<?php echo $board->id; ?>)">
                 </div>
             </div>
             <div class="modal-footer">

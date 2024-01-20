@@ -14,7 +14,7 @@ function fetchCards(boardId) {
             cardElement.setAttribute("data-bs-target", "#editCardModal");
             cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${card.id}')`);
             cardElement.innerHTML = `
-                <div class="card bg-light-subtle hover-overlay mt-3">
+                <div id="card-${card.id}" class="card bg-light-subtle hover-overlay mt-3">
                     <div class="card-body">
                         <h5 class="card-title">${card.name}</h5>
                         <p class="card-text">${card.description}</p>
@@ -76,7 +76,7 @@ function addCard(boardId, listId) {
         cardElement.setAttribute("data-bs-target", "#editCardModal");
         cardElement.setAttribute("onclick", `updateEditCardModal('${boardId}', '${result.cardId}')`);
         cardElement.innerHTML = `
-            <div class="card bg-light-subtle hover-overlay mt-3">
+            <div id="card-${result.cardId}" class="card bg-light-subtle hover-overlay mt-3">
                 <div class="card-body">
                     <h5 class="card-title">${cardName}</h5>
                     <p class="card-text">${cardDescription}</p>
@@ -120,35 +120,58 @@ function updateEditCardModal(boardId, cardId) {
     .catch(error => console.error('Error fetching card:', error));
 }
 
-function updateCardName() {
-    var cardId = document.getElementById('editCardId').value;
-    var cardName = document.getElementById('editCardModalLabel').innerText;
-    
+function updateCard(boardId) {
+    const cardId = document.getElementById('editCardId').value;
+    const cardName = document.getElementById('editCardModalLabel').innerText;
+    const cardDescription = document.getElementById('editCardDescription').value;
+    const cardDueDate = document.getElementById('editDueDate').value;
+
+    if (cardName.trim() === '' || cardDescription.trim() === '') {
+        alert('Please fill in all fields');
+        return;
+    }
+
     if (cardName.length > 32) {
         alert('Card name cannot exceed 32 characters.');
         return;
     }
-    
-    // Call JavaScript function to update card name
-    alert('Card name updated to: ' + cardName);
-}
 
-function updateCardDescription() {
-    var cardId = document.getElementById('editCardId').value;
-    var cardDescription = document.getElementById('editCardDescription').value;
-    // Call JavaScript function to update card description
-    alert('Card description updated to: ' + cardDescription);
-}
+    const requestBody = {
+        cardId: cardId,
+        boardId: boardId,
+        cardName: cardName,
+        cardDescription: cardDescription
+    };
 
-function updateDueDate() {
-    var cardId = document.getElementById('editCardId').value;
-    var dueDate = document.getElementById('editDueDate').value;
-    // Call JavaScript function to update due date
-    alert('Due date updated to: ' + dueDate);
-}
+    // Add due date to request body if it is not empty
+    if (cardDueDate.trim() !== '') {
+        requestBody.cardDueDate = cardDueDate;
+    }
 
-function deleteCard() {
-    var cardId = document.getElementById('editCardId').value;
-    // Call JavaScript function to delete card
-    alert('Card deleted.');
+    fetch(`/api/cards/update`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Log the message from the JSON response
+        console.log(data.message);
+        
+        // Update the card
+        document.getElementById(`card-${cardId}`).querySelector('.card-title').innerText = cardName;
+        document.getElementById(`card-${cardId}`).querySelector('.card-text').innerText = cardDescription;
+        document.getElementById(`card-${cardId}`).querySelector('.card-footer').innerText = cardDueDate;
+
+        // Close the modal
+        const editCardModal = document.getElementById('editCardModal');
+        const modal = bootstrap.Modal.getInstance(editCardModal);
+        modal.hide();
+    })
+    .catch(error => {
+        // Handle any errors
+        console.error('Error updating card:', error);
+    });
 }

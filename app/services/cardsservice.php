@@ -19,4 +19,8 @@ class CardsService {
     public function addCard($card) {
         return $this->repository->createCard($card);
     }
+
+    public function updateCard($card) {
+        return $this->repository->updateCard($card);
+    }
 }

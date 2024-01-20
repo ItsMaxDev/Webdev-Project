@@ -30,4 +30,14 @@ class CardsRepository extends Repository {
         ]);
         return $this->connection->lastInsertId();
     }
+
+    public function updateCard($card) {
+        $stmt = $this->connection->prepare("UPDATE cards SET name = :name, description = :description, dueDate = :dueDate WHERE id = :id");
+        return $stmt->execute([
+            'id' => $card->id,
+            'name' => $card->name,
+            'description' => $card->description,
+            'dueDate' => $card->dueDate
+        ]);
+    }
 }

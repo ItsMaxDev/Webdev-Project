@@ -122,4 +122,51 @@ class CardsController
             }
         }
     }
+
+    public function update() {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['message' => 'Unauthorized']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'];
+
+        if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            
+            if ($data && isset($data['boardId'], $data['cardId'], $data['cardName'], $data['cardDescription'])) {
+                $boardId = filter_var($data['boardId'], FILTER_SANITIZE_NUMBER_INT);
+                $cardId = filter_var($data['cardId'], FILTER_SANITIZE_NUMBER_INT);
+                $cardName = trim(htmlspecialchars($data['cardName']));
+                $cardDescription = trim(htmlspecialchars($data['cardDescription']));
+                $cardDueDate = isset($data['cardDueDate']) ? filter_var($data['cardDueDate'], FILTER_SANITIZE_STRING) : null;
+
+                // Check if the board belongs to the user
+                if (!$this->boardsService->checkUserBoardAccess($boardId, $userId)) {
+                    http_response_code(403);
+                    echo json_encode(['message' => 'Forbidden']);
+                    return;
+                }
+
+                $card = new \App\Models\Card();
+                $card->id = $cardId;
+                $card->name = $cardName;
+                $card->description = $cardDescription;
+                $card->dueDate = $cardDueDate;
+
+                $result = $this->cardsService->updateCard($card);
+                if ($result) {
+                    echo json_encode(['message' => 'Card updated successfully']);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['message' => 'Failed to update card']);
+                }
+            } else {
+                http_response_code(400);
+                echo json_encode(['message' => 'Missing data']);
+            }
+        }
+    }
 }
