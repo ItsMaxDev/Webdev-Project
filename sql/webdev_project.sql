@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Dec 15, 2023 at 01:52 PM
+-- Generation Time: Jan 20, 2024 at 05:08 PM
 -- Server version: 11.2.2-MariaDB-1:11.2.2+maria~ubu2204
 -- PHP Version: 8.2.13
 
@@ -43,9 +43,9 @@ CREATE TABLE `boards` (
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL,
   `listId` int(11) NOT NULL,
-  `title` varchar(128) NOT NULL,
+  `name` varchar(128) NOT NULL,
   `description` varchar(9999) NOT NULL,
-  `deadline` datetime DEFAULT NULL
+  `dueDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -147,13 +147,13 @@ ALTER TABLE `boards`
 -- Constraints for table `cards`
 --
 ALTER TABLE `cards`
-  ADD CONSTRAINT `List Reference` FOREIGN KEY (`listId`) REFERENCES `lists` (`id`);
+  ADD CONSTRAINT `List Reference` FOREIGN KEY (`listId`) REFERENCES `lists` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `lists`
 --
 ALTER TABLE `lists`
-  ADD CONSTRAINT `Board Reference` FOREIGN KEY (`boardId`) REFERENCES `boards` (`id`);
+  ADD CONSTRAINT `Board Reference` FOREIGN KEY (`boardId`) REFERENCES `boards` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
