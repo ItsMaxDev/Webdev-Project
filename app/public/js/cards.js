@@ -163,7 +163,7 @@ function updateCard(boardId) {
         // Update the card
         document.getElementById(`card-${cardId}`).querySelector('.card-title').innerText = cardName;
         document.getElementById(`card-${cardId}`).querySelector('.card-text').innerText = cardDescription;
-        document.getElementById(`card-${cardId}`).querySelector('.card-footer').innerText = cardDueDate;
+        document.getElementById(`card-${cardId}`).querySelector('.card-footer').innerText = cardDueDate ? new Date(cardDueDate).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '';
 
         // Close the modal
         const editCardModal = document.getElementById('editCardModal');
