@@ -70,6 +70,8 @@ function addCard(boardId, listId) {
     })
     .then(response => response.json())
     .then(result => {
+        console.log(result.message);
+
         const listContainer = document.getElementById(`list-${listId}`);
         const cardElement = document.createElement('a');
         cardElement.href = "#";

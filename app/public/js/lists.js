@@ -15,7 +15,7 @@ async function fetchLists(boardId) {
             listElement.innerHTML = `
                 <div class="card mh-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${list.id})">${list.name}</span>
+                        <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${list.id})" data-original="${list.name}">${list.name}</span>
                         <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
                     </div>
                     <div class="card-body overflow-y-auto pt-0" id="list-${list.id}">
@@ -76,7 +76,7 @@ function addCardModal(boardid, listId) {
 function addList(boardId) {
     const listName = document.getElementById('listName').value;
     
-    if (listName.trim() === '' || listName.trim() === '') {
+    if (listName.trim() === '') {
         alert('Please fill in all fields');
         return;
     }
@@ -98,6 +98,8 @@ function addList(boardId) {
     })
     .then(response => response.json())
     .then(result => {
+        console.log(result.message);
+
         const listsContainer = document.getElementById('listsContainer');
         const listElement = document.createElement('div');
         listElement.id = `listelement-${result.listId}`;
@@ -105,7 +107,7 @@ function addList(boardId) {
         listElement.innerHTML = `
             <div class="card mh-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${result.listId})">${listName}</span>
+                    <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${result.listId})" data-original="${listName}">${listName}</span>
                     <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
                 <div class="card-body overflow-y-auto pt-0" id="list-${result.listId}">
@@ -135,7 +137,29 @@ function addList(boardId) {
 }
 
 function updateList(boardId, listId) {
-    const listName = document.getElementById(`listelement-${listId}`).querySelector('span').textContent;
+    const span = document.getElementById(`listelement-${listId}`).querySelector('span');
+    const listName = span.textContent;
+
+    if (listName.trim() === '') {
+        alert('Please fill in all fields');
+
+        // Reset the span text to the original value
+        span.textContent = span.dataset.original;
+        
+        return;
+    }
+
+    if (listName.length > 32) {
+        alert('List name cannot exceed 32 characters.');
+
+        // Reset the span text to the original value
+        span.textContent = span.dataset.original;
+
+        return;
+    }
+
+    // Update the original value of the span
+    span.dataset.original = listName;
 
     fetch('/api/lists/update', {
         method: 'PUT',
