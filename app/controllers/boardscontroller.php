@@ -35,7 +35,7 @@ class BoardsController
                 return;
             }
 
-            $board = $this->boardsService->getBoard($_GET['id']);
+            $board = $this->boardsService->getBoard(filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT));
             if (!$board || $board->userId != $_SESSION['user_id']) {
                 header('Location: /boards');
                 return;
