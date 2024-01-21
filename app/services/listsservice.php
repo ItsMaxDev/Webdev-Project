@@ -15,4 +15,12 @@ class ListsService {
     public function addList($list) {
         return $this->repository->createList($list);
     }
+
+    public function updateList($list) {
+        return $this->repository->updateList($list);
+    }
+
+    public function deleteList($listId) {
+        return $this->repository->deleteList($listId);
+    }
 }

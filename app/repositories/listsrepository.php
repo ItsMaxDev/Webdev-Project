@@ -21,4 +21,19 @@ class ListsRepository extends Repository {
         ]);
         return $this->connection->lastInsertId();
     }
+
+    public function updateList($list) {
+        $stmt = $this->connection->prepare("UPDATE lists SET name = :name WHERE id = :id");
+        return $stmt->execute([
+            'id' => $list->id,
+            'name' => $list->name
+        ]);
+    }
+
+    public function deleteList($listId) {
+        $stmt = $this->connection->prepare("DELETE FROM lists WHERE id = :listId");
+        return $stmt->execute([
+            'listId' => $listId
+        ]);
+    }
 }
