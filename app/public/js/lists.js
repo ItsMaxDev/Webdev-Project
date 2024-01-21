@@ -11,14 +11,14 @@ async function fetchLists(boardId) {
         lists.forEach(list => {
             const listElement = document.createElement('div');
             listElement.id = `listelement-${list.id}`;
-            listElement.className = 'col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-3';
+            listElement.className = 'col-xl-3 col-lg-4 col-md-5 col-sm-6';
             listElement.innerHTML = `
-                <div class="card">
+                <div class="card mh-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>${list.name}</span>
                         <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
                     </div>
-                    <div class="card-body" id="list-${list.id}">
+                    <div class="card-body overflow-y-auto" id="list-${list.id}">
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${list.id})">Add a card</button>
@@ -96,14 +96,14 @@ function addList(boardId) {
         const listsContainer = document.getElementById('listsContainer');
         const listElement = document.createElement('div');
         listElement.id = `listelement-${result.listId}`;
-        listElement.className = 'col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-3';
+        listElement.className = 'col-xl-3 col-lg-4 col-md-5 col-sm-6';
         listElement.innerHTML = `
-            <div class="card">
+            <div class="card mh-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>${listName}</span>
                     <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
-                <div class="card-body" id="list-${result.listId}">
+                <div class="card-body overflow-y-auto" id="list-${result.listId}">
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${result.listId})">Add a card</button>

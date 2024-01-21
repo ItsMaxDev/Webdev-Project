@@ -1,4 +1,3 @@
-</div>
 </main>
     <!-- Bootstrap JS -->
     <script 

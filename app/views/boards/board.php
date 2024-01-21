@@ -2,24 +2,30 @@
 include_once __DIR__ . '/../header.php';
 ?>
 
-<h1 class="mt-5"><?php echo $board->name; ?></h1>
-<p><?php echo $board->description; ?></p>
-
-<div id="listsContainer" class="row">
-    <!-- Lists will be dynamically added here using JavaScript -->
-    <div id="addListButton" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-3">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#addListModal">
-            <div class="card hover-overlay">
-                <div class="card-body">
-                    <h5 class="card-title">Add List</h5>
+<div class="container-fluid">
+    <div class="row d-flex justify-content-between">
+        <div class="col-md-2 p-5">
+            <h1><?php echo $board->name; ?></h1>
+            <p><?php echo $board->description; ?></p>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemovalModal">Remove Board</button>
+        </div>
+        <div class="col-md-10 bg-dark-subtle">
+            <div id="listsContainer" class="row d-flex flex-row flex-nowrap overflow-x-auto p-5" style="height: calc(100vh - 58.6px);">
+                <!-- Lists will be dynamically added here using JavaScript -->
+                <div id="addListButton" class="col-xl-3 col-lg-4 col-md-5 col-sm-6">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#addListModal">
+                        <div class="card hover-overlay">
+                            <div class="card-body">
+                                <h5 class="card-title">Add List</h5>
+                            </div>
+                            <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
+                        </div>
+                    </a>
                 </div>
-                <div class="card mask" style="background-color: rgba(255,255,255, 0.1);"></div>
             </div>
-        </a>
+        </div>
     </div>
 </div>
-
-<button type="button" class="btn btn-danger mt-5" data-bs-toggle="modal" data-bs-target="#confirmRemovalModal">Remove Board</button>
 
 <!-- Add Card Modal -->
 <div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
