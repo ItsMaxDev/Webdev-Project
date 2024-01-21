@@ -140,11 +140,18 @@ function updateList(boardId, listId) {
     const span = document.getElementById(`listelement-${listId}`).querySelector('span');
     const listName = span.textContent;
 
+    var original = span.dataset.original;
+    
+    // If the list name has not changed, do not make a request
+    if (listName === original) {
+        return;
+    }
+
     if (listName.trim() === '') {
         alert('Please fill in all fields');
 
         // Reset the span text to the original value
-        span.textContent = span.dataset.original;
+        span.textContent = original;
         
         return;
     }
@@ -153,7 +160,7 @@ function updateList(boardId, listId) {
         alert('List name cannot exceed 32 characters.');
 
         // Reset the span text to the original value
-        span.textContent = span.dataset.original;
+        span.textContent = original;
 
         return;
     }

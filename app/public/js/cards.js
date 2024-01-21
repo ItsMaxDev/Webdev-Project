@@ -140,12 +140,20 @@ function updateCard(boardId) {
     const cardDescription = cardDescriptionElement.value;
     const cardDueDate = document.getElementById('editDueDate').value;
 
+    var originalName = cardModalLabel.dataset.original;
+    var originalDescription = cardDescriptionElement.dataset.original;
+
+    // If the card name and description have not changed, do not make a request
+    if (cardName === originalName && cardDescription === originalDescription) {
+        return;
+    }
+
     if (cardName.trim() === '' || cardDescription.trim() === '') {
         alert('Please fill in all fields');
 
         // Reset the modal fields to the original values
-        cardModalLabel.innerText = cardModalLabel.dataset.original;
-        cardDescriptionElement.value = cardDescriptionElement.dataset.original;
+        cardModalLabel.innerText = originalName;
+        cardDescriptionElement.value = originalDescription;
 
         return;
     }
@@ -154,11 +162,15 @@ function updateCard(boardId) {
         alert('Card name cannot exceed 32 characters.');
 
         // Reset the modal fields to the original values
-        cardModalLabel.innerText = cardModalLabel.dataset.original;
-        cardDescriptionElement.value = cardDescriptionElement.dataset.original;
+        cardModalLabel.innerText = originalName;
+        cardDescriptionElement.value = originalDescription;
 
         return;
     }
+
+    // Update the original values of the modal fields
+    cardModalLabel.dataset.original = cardName;
+    cardDescriptionElement.dataset.original = cardDescription;
 
     const requestBody = {
         cardId: cardId,
