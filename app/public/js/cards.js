@@ -114,28 +114,49 @@ function updateEditCardModal(boardId, cardId) {
     })
     .then(response => response.json())
     .then(card => {
-        // Update card modal fields
-        document.getElementById('editCardModalLabel').innerText = card.name;
-        document.getElementById('editCardDescription').value = card.description;
-        document.getElementById('editDueDate').value = card.dueDate;
-        document.getElementById('editCardId').value = card.id; // Set the card ID in the hidden input field
+        // Save the original values of the modal fields
+        const editCardModalLabel = document.getElementById('editCardModalLabel');
+        const editCardDescription = document.getElementById('editCardDescription');
+        const editCardDueDate = document.getElementById('editDueDate');
+        editCardModalLabel.setAttribute('data-original', card.name);
+        editCardDescription.setAttribute('data-original', card.description);
+        editCardDueDate.setAttribute('data-original', card.dueDate);
+
+        // Update the modal fields
+        editCardModalLabel.innerText = card.name;
+        editCardDescription.value = card.description;
+        editCardDueDate.value = card.dueDate;
+        document.getElementById('editCardId').value = card.id;
     })
     .catch(error => console.error('Error fetching card:', error));
 }
 
 function updateCard(boardId) {
+    const cardModalLabel = document.getElementById('editCardModalLabel');
+    const cardDescriptionElement = document.getElementById('editCardDescription');
+
     const cardId = document.getElementById('editCardId').value;
-    const cardName = document.getElementById('editCardModalLabel').innerText;
-    const cardDescription = document.getElementById('editCardDescription').value;
+    const cardName = cardModalLabel.innerText;
+    const cardDescription = cardDescriptionElement.value;
     const cardDueDate = document.getElementById('editDueDate').value;
 
     if (cardName.trim() === '' || cardDescription.trim() === '') {
         alert('Please fill in all fields');
+
+        // Reset the modal fields to the original values
+        cardModalLabel.innerText = cardModalLabel.dataset.original;
+        cardDescriptionElement.value = cardDescriptionElement.dataset.original;
+
         return;
     }
 
     if (cardName.length > 32) {
         alert('Card name cannot exceed 32 characters.');
+
+        // Reset the modal fields to the original values
+        cardModalLabel.innerText = cardModalLabel.dataset.original;
+        cardDescriptionElement.value = cardDescriptionElement.dataset.original;
+
         return;
     }
 
