@@ -117,6 +117,9 @@ function addList(boardId) {
         const addListModal = document.getElementById('addListModal');
         const modal = bootstrap.Modal.getInstance(addListModal);
         modal.hide();
+
+        // Clear the modal fields
+        document.getElementById('listName').value = '';
     })
     .catch(error => console.error('Error adding list:', error));
 }
