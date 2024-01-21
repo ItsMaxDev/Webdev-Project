@@ -164,11 +164,6 @@ function updateCard(boardId) {
         document.getElementById(`card-${cardId}`).querySelector('.card-title').innerText = cardName;
         document.getElementById(`card-${cardId}`).querySelector('.card-text').innerText = cardDescription;
         document.getElementById(`card-${cardId}`).querySelector('.card-footer').innerText = cardDueDate ? new Date(cardDueDate).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '';
-
-        // Close the modal
-        const editCardModal = document.getElementById('editCardModal');
-        const modal = bootstrap.Modal.getInstance(editCardModal);
-        modal.hide();
     })
     .catch(error => {
         console.error('Error updating card:', error);
