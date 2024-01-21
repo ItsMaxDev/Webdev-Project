@@ -99,8 +99,9 @@ function addList(boardId) {
         listElement.className = 'col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-3';
         listElement.innerHTML = `
             <div class="card">
-                <div class="card-header">
-                    ${listName}
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>${listName}</span>
+                    <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
                 <div class="card-body" id="list-${result.listId}">
                 </div>
