@@ -18,7 +18,7 @@ async function fetchLists(boardId) {
                         <span>${list.name}</span>
                         <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
                     </div>
-                    <div class="card-body overflow-y-auto" id="list-${list.id}">
+                    <div class="card-body overflow-y-auto pt-0" id="list-${list.id}">
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${list.id})">Add a card</button>
@@ -103,7 +103,7 @@ function addList(boardId) {
                     <span>${listName}</span>
                     <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
-                <div class="card-body overflow-y-auto" id="list-${result.listId}">
+                <div class="card-body overflow-y-auto pt-0" id="list-${result.listId}">
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${result.listId})">Add a card</button>
