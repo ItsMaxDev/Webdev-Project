@@ -105,7 +105,7 @@ function addList(boardId) {
                 <div class="card-body" id="list-${result.listId}">
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-primary" id="addCardButton" data-bs-toggle="modal" data-bs-target="#addCardModal">Add a card</button>
+                    <button type="button" class="btn btn-primary" id="addCardButton" onclick="addCardModal(${boardId}, ${result.listId})">Add a card</button>
                 </div>
             </div>
         `;
