@@ -66,7 +66,7 @@ class BoardsController
                 return;
             }
 
-            if ($this->boardsService->removeBoard($boardData['id'])) {
+            if ($this->boardsService->removeBoard(filter_var($boardData['id'], FILTER_SANITIZE_NUMBER_INT))) {
                 header('Location: /boards');
             } else {
                 echo '<script>alert("Failed to remove board");</script>';
