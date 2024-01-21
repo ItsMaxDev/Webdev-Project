@@ -134,17 +134,19 @@ function updateEditCardModal(boardId, cardId) {
 function updateCard(boardId) {
     const cardModalLabel = document.getElementById('editCardModalLabel');
     const cardDescriptionElement = document.getElementById('editCardDescription');
+    const cardDueDateElement = document.getElementById('editDueDate');
 
     const cardId = document.getElementById('editCardId').value;
     const cardName = cardModalLabel.innerText;
     const cardDescription = cardDescriptionElement.value;
-    const cardDueDate = document.getElementById('editDueDate').value;
+    const cardDueDate = cardDueDateElement.value;
 
     var originalName = cardModalLabel.dataset.original;
     var originalDescription = cardDescriptionElement.dataset.original;
+    var originalDueDate = cardDueDateElement.dataset.original === "null" ? '' : cardDueDateElement.dataset.original;
 
     // If the card name and description have not changed, do not make a request
-    if (cardName === originalName && cardDescription === originalDescription) {
+    if (cardName === originalName && cardDescription === originalDescription && cardDueDate === originalDueDate) {
         return;
     }
 
