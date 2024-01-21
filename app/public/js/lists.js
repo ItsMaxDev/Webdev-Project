@@ -15,8 +15,8 @@ async function fetchLists(boardId) {
             listElement.innerHTML = `
                 <div class="card mh-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${list.id})" data-original="${list.name}">${list.name}</span>
-                        <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
+                        <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${list.id})" data-original="${list.name}" class="col-10 p-1" style="cursor: pointer">${list.name}</span>
+                        <i class="fa-solid fa-trash col-2 text-end" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
                     </div>
                     <div class="card-body overflow-y-auto pt-0" id="list-${list.id}">
                     </div>
@@ -107,8 +107,8 @@ function addList(boardId) {
         listElement.innerHTML = `
             <div class="card mh-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${result.listId})" data-original="${listName}">${listName}</span>
-                    <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
+                    <span contenteditable="true" spellcheck="false" onblur="updateList(${boardId}, ${result.listId})" data-original="${listName}" class="col-10 p-1" style="cursor: pointer">${listName}</span>
+                    <i class="fa-solid fa-trash col-2 text-end" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
                 <div class="card-body overflow-y-auto pt-0" id="list-${result.listId}">
                 </div>
