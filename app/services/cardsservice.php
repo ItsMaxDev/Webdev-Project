@@ -23,4 +23,8 @@ class CardsService {
     public function updateCard($card) {
         return $this->repository->updateCard($card);
     }
+
+    public function deleteCard($cardId) {
+        return $this->repository->deleteCard($cardId);
+    }
 }

@@ -169,4 +169,42 @@ class CardsController
             }
         }
     }
+
+    public function delete() {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['message' => 'Unauthorized']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'];
+
+        if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            
+            if ($data && isset($data['boardId'], $data['cardId'])) {
+                $boardId = filter_var($data['boardId'], FILTER_SANITIZE_NUMBER_INT);
+                $cardId = filter_var($data['cardId'], FILTER_SANITIZE_NUMBER_INT);
+
+                // Check if the board belongs to the user
+                if (!$this->boardsService->checkUserBoardAccess($boardId, $userId)) {
+                    http_response_code(403);
+                    echo json_encode(['message' => 'Forbidden']);
+                    return;
+                }
+
+                $result = $this->cardsService->deleteCard($cardId);
+                if ($result) {
+                    echo json_encode(['message' => 'Card deleted successfully']);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['message' => 'Failed to delete card']);
+                }
+            } else {
+                http_response_code(400);
+                echo json_encode(['message' => 'Missing data']);
+            }
+        }
+    }
 }

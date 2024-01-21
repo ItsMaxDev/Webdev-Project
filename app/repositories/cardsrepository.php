@@ -40,4 +40,11 @@ class CardsRepository extends Repository {
             'dueDate' => $card->dueDate
         ]);
     }
+
+    public function deleteCard($cardId) {
+        $stmt = $this->connection->prepare("DELETE FROM cards WHERE id = :cardId");
+        return $stmt->execute([
+            'cardId' => $cardId
+        ]);
+    }
 }

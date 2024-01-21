@@ -158,7 +158,6 @@ function updateCard(boardId) {
     })
     .then(response => response.json())
     .then(data => {
-        // Log the message from the JSON response
         console.log(data.message);
         
         // Update the card
@@ -172,7 +171,36 @@ function updateCard(boardId) {
         modal.hide();
     })
     .catch(error => {
-        // Handle any errors
         console.error('Error updating card:', error);
+    });
+}
+
+function deleteCard(boardId) {
+    const cardId = document.getElementById('editCardId').value;
+
+    fetch(`/api/cards/delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            cardId: cardId,
+            boardId: boardId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+
+        // Remove the card from the DOM
+        document.getElementById(`card-${cardId}`).remove();
+
+        // Close the modal
+        const editCardModal = document.getElementById('editCardModal');
+        const modal = bootstrap.Modal.getInstance(editCardModal);
+        modal.hide();
+    })
+    .catch(error => {
+        console.error('Error deleting card:', error);
     });
 }
