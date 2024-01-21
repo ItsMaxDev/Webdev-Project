@@ -1,12 +1,12 @@
-function fetchCards(boardId) {
-    fetch(`/api/cards?boardId=${boardId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(cards => {
+async function fetchCards(boardId) {
+    try {
+        const response = await fetch(`/api/cards?boardId=${boardId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const cards = await response.json();
         cards.forEach(card => {
             const cardElement = document.createElement('a');
             cardElement.href = "#";
@@ -28,8 +28,9 @@ function fetchCards(boardId) {
             const listContainer = document.getElementById(`list-${card.listId}`);
             listContainer.appendChild(cardElement);
         });
-    })
-    .catch(error => console.error('Error fetching cards:', error));
+    } catch (error) {
+        console.error('Error fetching cards:', error);
+    }
 }
 
 function addCard(boardId, listId) {

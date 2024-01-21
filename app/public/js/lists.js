@@ -1,12 +1,12 @@
-function fetchLists(boardId) {
-    fetch(`/api/lists?boardId=${boardId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(lists => {
+async function fetchLists(boardId) {
+    try {
+        const response = await fetch(`/api/lists?boardId=${boardId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const lists = await response.json();
         const listsContainer = document.getElementById('listsContainer');
         lists.forEach(list => {
             const listElement = document.createElement('div');
@@ -26,8 +26,9 @@ function fetchLists(boardId) {
             const addListButton = document.getElementById('addListButton');
             listsContainer.insertBefore(listElement, addListButton);
         });
-    })
-    .catch(error => console.error('Error fetching lists:', error));
+    } catch (error) {
+        console.error('Error fetching lists:', error);
+    }
 }
 
 function addCardModal(boardid, listId) {
