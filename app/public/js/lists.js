@@ -15,7 +15,7 @@ async function fetchLists(boardId) {
             listElement.innerHTML = `
                 <div class="card mh-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>${list.name}</span>
+                        <span contenteditable="true" onblur="updateList(${boardId}, ${list.id})">${list.name}</span>
                         <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${list.id})" style="cursor: pointer"></i>
                     </div>
                     <div class="card-body overflow-y-auto pt-0" id="list-${list.id}">
@@ -105,7 +105,7 @@ function addList(boardId) {
         listElement.innerHTML = `
             <div class="card mh-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>${listName}</span>
+                    <span contenteditable="true" onblur="updateList(${boardId}, ${result.listId})">${listName}</span>
                     <i class="fa-solid fa-trash" onclick="deleteList(${boardId}, ${result.listId})" style="cursor: pointer"></i>
                 </div>
                 <div class="card-body overflow-y-auto pt-0" id="list-${result.listId}">
@@ -132,4 +132,25 @@ function addList(boardId) {
         document.getElementById('listName').value = '';
     })
     .catch(error => console.error('Error adding list:', error));
+}
+
+function updateList(boardId, listId) {
+    const listName = document.getElementById(`listelement-${listId}`).querySelector('span').textContent;
+
+    fetch('/api/lists/update', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            boardId: boardId,
+            listId: listId,
+            listName: listName
+        }),
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result.message);
+    })
+    .catch(error => console.error('Error updating list:', error));
 }
