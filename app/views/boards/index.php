@@ -2,13 +2,15 @@
 include_once __DIR__ . '/../header.php';
 ?>
 
-<h1 class="mt-5 d-flex flex-column flex-sm-row align-items-sm-center">
-    <?php echo $_SESSION['user_username'] . "'s boards"; ?>
-    <button type="button" class="btn btn-primary mt-2 mt-sm-0 ms-0 ms-sm-3" data-bs-toggle="modal" data-bs-target="#addBoardModal">Add a Board</button>
-</h1>
+<div class="container">
+    <h1 class="mt-5 d-flex flex-column flex-sm-row align-items-sm-center">
+        <?php echo $_SESSION['user_username'] . "'s boards"; ?>
+        <button type="button" class="btn btn-primary mt-2 mt-sm-0 ms-0 ms-sm-3" data-bs-toggle="modal" data-bs-target="#addBoardModal">Add a Board</button>
+    </h1>
 
-<div id="boardsContainer" class="row">
-    <!-- Boards will be dynamically added here using JavaScript -->
+    <div id="boardsContainer" class="row">
+        <!-- Boards will be dynamically added here using JavaScript -->
+    </div>
 </div>
 
 <!-- Add Board Modal -->
