@@ -1,7 +1,7 @@
 # Webdev-Project
 
 ## Overview
-This project is the culminating assignment for my web development 1 course, designed around the concept of a task manager similar to Trello. Utilizing PHP and the MVC (Model-View-Controller) design pattern, the application offers a dynamic and user-friendly platform for task management and organization.
+This project is the culminating assignment for my web development 1 course, designed around the concept of a task manager similar to Trello. Utilizing PHP and the MVC (Model-View-Controller) design pattern, the application offers a dynamic and user-friendly platform for task management and organization. You can see the demo [here](https://tasks.maxkruiswegt.com/).
 
 ## Key Features
 - **Comprehensive Task Management**: Users have the ability to create, read, update, and delete tasks organized as cards, providing a complete management system for their activities.
