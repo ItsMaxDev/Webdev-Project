@@ -10,6 +10,9 @@ This project is the culminating assignment for my web development 1 course, desi
 - **User Authentication**: The application features a secure login and registration system, allowing users to access their personalized boards and tasks with confidence.
 - **Responsive Design**: Designed for responsiveness and accessibility, the application ensures a seamless experience across various devices and screen sizes.
 
+## Custom API for CRUD Operations
+The project utilizes a custom-built API to perform Create, Read, Update, and Delete (CRUD) operations on tasks, boards, and lists, providing seamless data management capabilities. This API is integrated into the back-end architecture, enabling efficient interaction with the application's database.
+
 ## Technology Stack
 - **Front-End**: HTML, CSS, JavaScript
 - **Back-End**: PHP, utilizing the MVC design pattern
